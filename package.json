@@ -34,6 +34,7 @@
     "test": "standard --verbose | snazzy && tape ./test/**/*.test.js | tap-spec"
   },
   "dependencies": {
-    "q-flat": "^0.2.3"
+    "deep-assign": "^2.0.0",
+    "q-set": "^1.4.4"
   }
 }

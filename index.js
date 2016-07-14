@@ -2,7 +2,8 @@
 
 var URL = require('url')
 var QS = require('querystring')
-var qFlat = require('q-flat')
+var assign = require('deep-assign')
+var qSet = require('q-set')
 var queryReg = /\?[^#]+/g
 
 module.exports = function () {
@@ -11,7 +12,6 @@ module.exports = function () {
     var res = ctx.res
 
     res.refreshWith = function refreshWith (setters, opts) {
-      setters = qFlat(setters)
       opts = opts || {}
 
       // Get href, checking for back and defaulting to alt.
@@ -19,10 +19,8 @@ module.exports = function () {
 
       // Pull out querystring from url and parse it.
       var m = href.match(queryReg)
-      var query = m ? QS.parse(m[0].slice(1)) : {}
-
-      // Assign setters to query.
-      for (var key in setters) query[key] = setters[key]
+      var query = m ? unflatten(QS.parse(m[0].slice(1))) : {}
+      assign(query, setters)
 
       // Create the new query string and redirect.
       var querystring = '?' + QS.stringify(cast(query))
@@ -41,13 +39,20 @@ module.exports = function () {
  */
 function cast (data) {
   var result = {}
-
   for (var key in data) {
     var val = data[key]
     if (val === '' || val === undefined) continue
     else if (val instanceof Date && isFinite(val)) result[key] = val.toISOString()
     else result[key] = String(val)
   }
+  return result
+}
 
+/**
+ * Unflatten a query object.
+ */
+function unflatten (query) {
+  var result = {}
+  for (var key in query) qSet(result, key, query[key])
   return result
 }
