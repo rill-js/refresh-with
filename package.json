@@ -1,7 +1,7 @@
 {
   "name": "@rill/refresh-with",
   "description": "Redirect and alter the query string for Rill.",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": "Dylan Piercey <pierceydylan@gmail.com>",
   "bugs": "https://github.com/rill-js/refresh-with/issues",
   "devDependencies": {

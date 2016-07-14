@@ -16,7 +16,7 @@ module.exports = function () {
       opts = opts || {}
 
       // Get href, checking for back and defaulting to alt.
-      var href = (opts.url === 'back' && (req.get('Referrer') || opts.alt)) || req.href
+      var href = (opts.url === 'back' && (req.get('Referrer') || opts.alt)) || opts.url || req.href
 
       // Pull out querystring from url and parse it.
       var m = href.match(queryReg)
