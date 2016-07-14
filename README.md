@@ -38,7 +38,7 @@ app.get("/my-view", ({ req, res }, next)=> {
 app.get("/from-somewhere-else", ({ req, res }, next)=> {
 
 	// Example usecase of removing a modal from the querystring then redirect to the previous page.
-	res.refreshWith({ modal: undefined, success: true }, { back: true })
+	res.refreshWith({ modal: undefined, success: true }, { url: 'back' })
 	// Removes `modal` and adds `success=true to the referrer`
 	res.get('Location') // -> `http://test.com/my-view?success=true&test=1`
 })
@@ -47,8 +47,10 @@ app.get("/from-somewhere-else", ({ req, res }, next)=> {
 # API
 
 ###`ctx.res.refreshWith(setters:Object, options:Object)`
-Similar to calling `ctx.res.refresh` but will update the current querystring with `setters`.
-Specify the `options.back` option as `true` to automatically redirect to the `referrer` page.
+Similar to calling `ctx.res.redirect` but will update the current querystring with `setters` and default the `url` to the current `href`.
+Specify the `options.url` option as `back` to automatically redirect to the `referrer` page.
+
+You can also specify `options.alt` for the fallback when using `options.url = 'back'`.
 
 ---
 

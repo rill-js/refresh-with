@@ -12,7 +12,6 @@ test('Updates Location header and QueryString', function (t) {
     .use(refreshWith())
     .get('/', function (ctx) {
       ctx.res.refreshWith({ a: 3, b: undefined })
-
       t.equals(ctx.res.get('Location').split('?').pop(), 'a=3&c=3')
     })
     .listen().unref())

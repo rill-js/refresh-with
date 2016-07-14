@@ -12,7 +12,8 @@ module.exports = function () {
     var res = ctx.res
 
     res.refreshWith = function refreshWith (setters, opts) {
-      var href = (opts && opts.back && req.get('Referrer')) || req.href
+      opts = opts || {}
+      var href = (opts.url === 'back' && (req.get('Referrer') || opts.alt)) || req.href
       if (isEmpty(setters)) return res.redirect(href)
       var querystring = buildQS(req.query, setters)
       var hash = req.hash || ''
