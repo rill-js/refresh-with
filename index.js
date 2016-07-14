@@ -4,6 +4,7 @@ var URL = require('url')
 var QS = require('querystring')
 var assign = require('deep-assign')
 var qSet = require('q-set')
+var qFlat = require('q-flat')
 var queryReg = /\?[^#]+/g
 
 module.exports = function () {
@@ -23,7 +24,7 @@ module.exports = function () {
       assign(query, setters)
 
       // Create the new query string and redirect.
-      var querystring = '?' + QS.stringify(cast(query))
+      var querystring = '?' + QS.stringify(cast(qFlat(query)))
       var hash = req.hash || ''
       res.redirect(URL.resolve(href, querystring + hash))
     }
