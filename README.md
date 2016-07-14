@@ -13,7 +13,6 @@ npm install @rill/refresh-with
 
 # Example
 
-#### Load the data in middleware.
 ```js
 const app = rill();
 const refreshWith = require("@rill/refresh-with")
