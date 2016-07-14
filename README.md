@@ -50,9 +50,6 @@ app.get("/from-somewhere-else", ({ req, res }, next)=> {
 Similar to calling `ctx.res.refresh` but will update the current querystring with `setters`.
 Specify the `options.back` option as `true` to automatically redirect to the `referrer` page.
 
-
-```
-
 ---
 
 ### Contributions
