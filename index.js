@@ -1,11 +1,9 @@
 'use strict'
 
 var URL = require('url')
-var QS = require('querystring')
 var assign = require('deep-assign')
 var qSet = require('q-set')
 var qFlat = require('q-flat')
-var queryReg = /\?[^#]+/g
 
 module.exports = function () {
   return function refreshWithMiddleware (ctx, next) {
@@ -14,19 +12,12 @@ module.exports = function () {
 
     res.refreshWith = function refreshWith (setters, opts) {
       opts = opts || {}
-
-      // Get href, checking for back and defaulting to alt.
       var href = (opts.url === 'back' && (req.get('Referrer') || opts.alt)) || opts.url || req.href
-
-      // Pull out querystring from url and parse it.
-      var m = href.match(queryReg)
-      var query = m ? unflatten(QS.parse(m[0].slice(1))) : {}
-      assign(query, setters)
-
-      // Create the new query string and redirect.
-      var querystring = '?' + QS.stringify(cast(qFlat(query)))
-      var hash = req.hash || ''
-      res.redirect(URL.resolve(href, querystring + hash))
+      var parsed = URL.parse(href, true)
+      var query = unflatten(parsed.query || {})
+      parsed.query = cast(qFlat(assign(query, setters)))
+      delete parsed.search
+      res.redirect(URL.format(parsed))
     }
 
     return next()
