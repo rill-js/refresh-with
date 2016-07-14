@@ -1,0 +1,40 @@
+{
+  "name": "@rill/refresh-with",
+  "description": "Redirect and alter the query string for Rill.",
+  "version": "0.1.0",
+  "author": "Dylan Piercey <pierceydylan@gmail.com>",
+  "bugs": "https://github.com/rill-js/refresh-with/issues",
+  "dependencies": {
+    "dot-prop": "^3.0.0",
+    "q-flat": "^0.2.3"
+  },
+  "devDependencies": {
+    "rill": "^0.6.7",
+    "snazzy": "^4.0.0",
+    "standard": "^7.1.2",
+    "supertest": "^1.2.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.0"
+  },
+  "homepage": "https://github.com/rill-js/refresh-with",
+  "keywords": [
+    "isomorphic",
+    "querystring",
+    "redirect",
+    "redirect-with",
+    "refresh",
+    "refresh-with",
+    "rill",
+    "universal",
+    "update"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rill-js/refresh-with"
+  },
+  "scripts": {
+    "test": "standard --verbose | snazzy && tape ./test/**/*.test.js | tap-spec"
+  }
+}
