@@ -19,8 +19,7 @@ module.exports = function () {
 
       // Pull out querystring from url and parse it.
       var m = href.match(queryReg)
-      if (!m) return res.redirect(href)
-      var query = QS.parse(m[0].slice(1))
+      var query = m ? QS.parse(m[0].slice(1)) : {}
 
       // Assign setters to query.
       for (var key in setters) query[key] = setters[key]
