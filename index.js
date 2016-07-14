@@ -3,8 +3,7 @@
 var URL = require('url')
 var QS = require('querystring')
 var qFlat = require('q-flat')
-var set = require('dot-prop').set
-var has = Object.prototype.hasOwnProperty
+var queryReg = /\?[^#]+/g
 
 module.exports = function () {
   return function refreshWithMiddleware (ctx, next) {
@@ -12,28 +11,28 @@ module.exports = function () {
     var res = ctx.res
 
     res.refreshWith = function refreshWith (setters, opts) {
+      setters = qFlat(setters)
       opts = opts || {}
+
+      // Get href, checking for back and defaulting to alt.
       var href = (opts.url === 'back' && (req.get('Referrer') || opts.alt)) || req.href
-      if (isEmpty(setters)) return res.redirect(href)
-      var querystring = buildQS(req.query, setters)
+
+      // Pull out querystring from url and parse it.
+      var m = href.match(queryReg)
+      if (!m) return res.redirect(href)
+      var query = QS.parse(m[0].slice(1))
+
+      // Assign setters to query.
+      for (var key in setters) query[key] = setters[key]
+
+      // Create the new query string and redirect.
+      var querystring = '?' + QS.stringify(cast(query))
       var hash = req.hash || ''
       res.redirect(URL.resolve(href, querystring + hash))
     }
 
     return next()
   }
-}
-
-/**
- * Updates an old query and turns it into a query string.
- */
-function buildQS (query, setters) {
-  // Deep clone query.
-  query = JSON.parse(JSON.stringify(query))
-  // Set all keys from options.
-  for (var key in setters) set(query, key, setters[key])
-  // Build a query string.
-  return isEmpty(query) ? '' : '?' + QS.stringify(cast(qFlat(query)))
 }
 
 /**
@@ -52,12 +51,4 @@ function cast (data) {
   }
 
   return result
-}
-
-/**
- * Check if a value is empty.
- */
-function isEmpty (val) {
-  for (var key in val) if (has.call(val, key)) return false
-  return true
 }
