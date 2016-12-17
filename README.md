@@ -58,7 +58,7 @@ app.get('/my-view', ({ req, res }, next)=> {
 // Example `referrer` is `http://test.com/my-view?modal=hello&test=1`
 app.get('/from-somewhere-else', ({ req, res }, next)=> {
 	// Example usecase of redirecting to the previous page while unsetting a modal.
-	res.refreshWith({ modal: '', success: true }, { url: 'back' })
+	res.refreshWith({ modal: '', success: true }, { url: 'back', hash: '#top' })
 	// Removes `modal` and adds `success=true to the referrer`
 	res.get('Location') // -> `http://test.com/my-view?success=true&test=1`
 })

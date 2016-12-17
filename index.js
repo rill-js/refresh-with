@@ -16,6 +16,7 @@ module.exports = function () {
       var parsed = URL.parse(href, true)
       var query = unflatten(parsed.query || {})
       parsed.query = cast(qFlat(assign(query, setters)))
+      if ('hash' in opts) parsed.hash = opts.hash
       delete parsed.search
       res.redirect(URL.format(parsed))
     }
