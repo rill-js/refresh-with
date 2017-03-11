@@ -6,6 +6,8 @@
   "bugs": "https://github.com/rill-js/refresh-with/issues",
   "dependencies": {
     "deep-assign": "^2.0.0",
+    "mini-querystring": "^1.0.2",
+    "mini-url": "^1.5.1",
     "q-flat": "^0.2.3"
   },
   "devDependencies": {
