@@ -1,8 +1,8 @@
 'use strict'
 
-var URL = require('url')
+var URL = require('mini-url')
+var QS = require('mini-querystring')
 var assign = require('deep-assign')
-var qSet = require('q-set')
 var qFlat = require('q-flat')
 
 module.exports = function () {
@@ -13,12 +13,18 @@ module.exports = function () {
     res.refreshWith = function refreshWith (setters, opts) {
       opts = opts || {}
       var href = (opts.url === 'back' && (req.get('Referrer') || opts.alt)) || opts.url || req.href
-      var parsed = URL.parse(href, true)
-      var query = unflatten(parsed.query || {})
-      parsed.query = cast(qFlat(assign(query, setters)))
-      if ('hash' in opts) parsed.hash = opts.hash
-      delete parsed.search
-      res.redirect(URL.format(parsed))
+      var parsed = URL.parse(href)
+      var query = QS.parse(parsed.search, true)
+      var search = QS.stringify(cast(qFlat(assign(query, setters))))
+      if (search) search = '?' + search
+
+      res.redirect(URL.stringify({
+        protocol: parsed.protocol,
+        host: parsed.host,
+        pathname: parsed.pathname,
+        search: search,
+        hash: opts.hash || parsed.hash
+      }))
     }
 
     return next()
@@ -38,14 +44,5 @@ function cast (data) {
     else if (val instanceof Date && isFinite(val)) result[key] = val.toISOString()
     else result[key] = String(val)
   }
-  return result
-}
-
-/**
- * Unflatten a query object.
- */
-function unflatten (query) {
-  var result = {}
-  for (var key in query) qSet(result, key, query[key])
   return result
 }

@@ -6,14 +6,13 @@
   "bugs": "https://github.com/rill-js/refresh-with/issues",
   "dependencies": {
     "deep-assign": "^2.0.0",
-    "q-flat": "^0.2.3",
-    "q-set": "^1.4.4"
+    "q-flat": "^0.2.3"
   },
   "devDependencies": {
-    "rill": "^2.5.1",
-    "snazzy": "^5.0.0",
-    "standard": "^8.6.0",
-    "supertest": "^2.0.1",
+    "rill": "^4.1.0",
+    "snazzy": "^6.0.0",
+    "standard": "^9.0.1",
+    "supertest": "^3.0.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3"
   },
