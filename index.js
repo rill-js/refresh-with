@@ -13,7 +13,7 @@ module.exports = function () {
     res.refreshWith = function refreshWith (setters, opts) {
       opts = opts || {}
       var href = (opts.url === 'back' && (req.get('Referrer') || opts.alt)) || opts.url || req.href
-      var parsed = URL.parse(href)
+      var parsed = URL.parse(href, req.href)
       var query = QS.parse(parsed.search, true)
       var search = QS.stringify(cast(qFlat(assign(query, setters))))
       if (search) search = '?' + search
