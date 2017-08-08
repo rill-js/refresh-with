@@ -1,9 +1,9 @@
 'use strict'
 
+var qFlat = require('q-flat')
 var URL = require('mini-url')
 var QS = require('mini-querystring')
-var assign = require('deep-assign')
-var qFlat = require('q-flat')
+var extend = require('just-extend')
 
 module.exports = function () {
   return function refreshWithMiddleware (ctx, next) {
@@ -15,7 +15,7 @@ module.exports = function () {
       var href = (opts.url === 'back' && (req.get('Referrer') || opts.alt)) || opts.url || req.href
       var parsed = URL.parse(href, req.href)
       var query = QS.parse(parsed.search, true)
-      var search = QS.stringify(cast(qFlat(assign(query, setters))))
+      var search = QS.stringify(cast(qFlat(extend(true, query, setters))))
       if (search) search = '?' + search
 
       res.redirect(URL.stringify({
